@@ -7,6 +7,6 @@ import lombok.*;
 @Builder
 @ToString
 @AllArgsConstructor
-public class ResponseMessageDto {
+public class ContactResponseDTO {
     String message;
 }

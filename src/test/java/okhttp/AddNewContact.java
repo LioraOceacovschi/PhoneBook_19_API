@@ -3,7 +3,7 @@ package okhttp;
 import com.google.gson.Gson;
 import dto.ContactDTO;
 import dto.ErrorDTO;
-import dto.ResponseMessageDto;
+import dto.ContactResponseDTO;
 import okhttp3.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -23,7 +23,6 @@ public class AddNewContact {
     public void addNewContactPositive() throws IOException {
         int i = (int) (System.currentTimeMillis()/1000%3600);
         ContactDTO contactDTO = ContactDTO.builder()
-                .id("stringId")
                 .name("name")
                 .lastName ("lastName")
                 .email("email@mail.com")
@@ -41,9 +40,13 @@ public class AddNewContact {
         Response response = client.newCall(request).execute();
 
         if(response.isSuccessful()){
-            ResponseMessageDto responseMessageDto =
-                    gson.fromJson(response.body().string(), ResponseMessageDto.class);
-            System.out.println(responseMessageDto.getMessage());
+            ContactResponseDTO responseMessageDto =
+                    gson.fromJson(response.body().string(), ContactResponseDTO.class);
+            String message = responseMessageDto.getMessage();
+            System.out.println(message);
+            String id = message.substring(message.lastIndexOf(" ") + 1);
+            System.out.println(id);
+
             System.out.println("Response code is -----> " +response.code());
             Assert.assertTrue(response.isSuccessful());
         }else{
